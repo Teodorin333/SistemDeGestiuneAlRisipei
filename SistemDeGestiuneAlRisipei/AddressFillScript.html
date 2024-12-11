@@ -1,0 +1,208 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Address Selection</title>
+    <style>
+        body {
+            background: #e5f7d1;
+            margin: 0;
+        }
+
+        .sb-title {
+            position: relative;
+            top: -12px;
+            font-family: Roboto, sans-serif;
+            font-weight: 500;
+        }
+
+        .sb-title-icon {
+            position: relative;
+            top: -5px;
+        }
+
+        gmpx-split-layout {
+            height: 500px;
+            width: 1000px;
+        }
+
+            gmpx-split-layout:not(:defined) {
+                visibility: hidden;
+            }
+
+        .panel {
+            background: #e5f7d1;
+            box-sizing: border-box;
+            height: 100%;
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .half-input-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .half-input {
+            max-width: 120px;
+        }
+
+        h2 {
+            margin: 0;
+            font-family: Roboto, sans-serif;
+        }
+
+        input {
+            height: 30px;
+        }
+
+        input {
+            border: 0;
+            border-bottom: 1px solid black;
+            font-size: 14px;
+            font-family: Roboto, sans-serif;
+            font-style: normal;
+            font-weight: normal;
+        }
+
+            input:focus::placeholder {
+                color: white;
+            }
+    </style>
+    <script type="module">
+      "use strict";
+
+      import {APILoader} from 'https://unpkg.com/@googlemaps/extended-component-library@0.6';
+
+      const CONFIGURATION = {
+        "ctaTitle": "Checkout",
+          "mapOptions": {
+              "center": { "lat": 44.40930277855032, "lng": 26.113336187653346 },
+              "fullscreenControl": true, "mapTypeControl": false, "streetViewControl": true, "zoom": 15,
+              "zoomControl": true, "maxZoom": 22, "mapId": ""
+          },
+        "mapsApiKey": "AIzaSyDr8qjcXOWsKsVGHdw1lHXy6sy_svXaZuk",
+        "capabilities": {"addressAutocompleteControl":true,"mapDisplayControl":true,"ctaControl":false}
+      };
+
+      const SHORT_NAME_ADDRESS_COMPONENT_TYPES =
+          new Set(['street_number', 'administrative_area_level_1', 'postal_code']);
+
+      const ADDRESS_COMPONENT_TYPES_IN_FORM = [
+        'location',
+
+      ];
+
+      function getFormInputElement(componentType) {
+        return document.getElementById(`${componentType}-input`);
+      }
+
+      function fillInAddress(place) {
+        function getComponentName(componentType) {
+          for (const component of place.address_components || []) {
+            if (component.types[0] === componentType) {
+              return SHORT_NAME_ADDRESS_COMPONENT_TYPES.has(componentType) ?
+                  component.short_name :
+                  component.long_name;
+            }
+          }
+          return '';
+        }
+
+        function getComponentText(componentType) {
+          return (componentType === 'location') ?
+              `${getComponentName('street_number')} ${getComponentName('route')}` :
+              getComponentName(componentType);
+        }
+
+        for (const componentType of ADDRESS_COMPONENT_TYPES_IN_FORM) {
+          getFormInputElement(componentType).value = getComponentText(componentType);
+        }
+      }
+
+      function renderAddress(place) {
+        const mapEl = document.querySelector('gmp-map');
+        const markerEl = document.querySelector('gmp-advanced-marker');
+
+        if (place.geometry && place.geometry.location) {
+          mapEl.center = place.geometry.location;
+          markerEl.position = place.geometry.location;
+        } else {
+          markerEl.position = null;
+        }
+      }
+
+        function printCoordinatesToConsole(place) {
+            if (place.geometry && place.geometry.location) {
+                const lat = place.geometry.location.lat();
+                const lng = place.geometry.location.lng();
+                console.log(`Latitude: ${lat}, Longitude: ${lng}`);
+                if (window.JavaScriptReader) {
+                    window.JavaScriptReader.receiveCoordinates(lat, lng, String(place.name));
+                } else {
+                    console.log('JavaScriptReader.ReceiveCoordinates not found');
+                }
+            } else {
+                console.log('No geometry information available.');
+            }
+        }
+
+      async function initMap() {
+        const {Autocomplete} = await APILoader.importLibrary('places');
+
+        const mapOptions = CONFIGURATION.mapOptions;
+        mapOptions.mapId = mapOptions.mapId || 'DEMO_MAP_ID';
+          mapOptions.center = mapOptions.center || { lat: 44.40930277855032, lng: 26.113336187653346 };
+
+        await customElements.whenDefined('gmp-map');
+        document.querySelector('gmp-map').innerMap.setOptions(mapOptions);
+        const autocomplete = new Autocomplete(getFormInputElement('location'), {
+          fields: ['address_components', 'geometry', 'name'],
+            types: ['address'],
+            componentRestrictions: { country: 'ro' }
+        });
+
+        autocomplete.addListener('place_changed', () => {
+          var place = autocomplete.getPlace();
+          if (!place.geometry) {
+            window.alert(`No details available for input: '${place.name}'`);
+            return;
+          }
+          renderAddress(place);
+          fillInAddress(place);
+          printCoordinatesToConsole(place);
+        });
+
+         getFormInputElement('location').addEventListener('keydown', (event) => {
+              if (event.key === 'Enter') {
+                  const place = autocomplete.getPlace();
+                  printCoordinatesToConsole(place);
+              }
+          });
+        }
+
+
+        initMap();
+    </script>
+</head>
+<body>
+    <gmpx-api-loader key="AIzaSyDr8qjcXOWsKsVGHdw1lHXy6sy_svXaZuk" solution-channel="GMP_QB_addressselection_v3_cAB">
+    </gmpx-api-loader>
+    <gmpx-split-layout row-layout-min-width="600">
+        <div class="panel" slot="fixed">
+            <div>
+                <img class="sb-title-icon" src="https://fonts.gstatic.com/s/i/googlematerialicons/location_pin/v5/24px.svg" alt="">
+                <span class="sb-title">Address Selection</span>
+            </div>
+            <input type="text" placeholder="Address" id="location-input" />
+            <div class="half-input-container">
+            </div>
+        </div>
+        <gmp-map slot="main">
+            <gmp-advanced-marker></gmp-advanced-marker>
+        </gmp-map>
+    </gmpx-split-layout>
+</body>
+</html>

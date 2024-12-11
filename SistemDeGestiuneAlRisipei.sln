@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemDeGestiuneAlRisipei", "SistemDeGestiuneAlRisipei\SistemDeGestiuneAlRisipei.csproj", "{C99C3529-897C-4711-9207-E3C736E952EB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{51E7AEFE-5F50-4379-AB74-0C7EB2588F71}"
+	ProjectSection(SolutionItems) = preProject
+		..\slaygorithm\routeCalculator.py = ..\slaygorithm\routeCalculator.py
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C99C3529-897C-4711-9207-E3C736E952EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C99C3529-897C-4711-9207-E3C736E952EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C99C3529-897C-4711-9207-E3C736E952EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C99C3529-897C-4711-9207-E3C736E952EB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7DA63215-0DAF-4363-A9BF-81F75962A197}
+	EndGlobalSection
+EndGlobal

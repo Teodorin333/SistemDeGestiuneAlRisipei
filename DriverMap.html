@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        #map {
+            height: 400px;
+            width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+
+var map;
+function initMap() {
+    var origin = {
+        lat: 44.40930277855032,
+        lng: 26.113336187653346
+    };
+    var punct1 = {
+    lat: 44.5060994819046,
+     lng: 26.0850293346925
+    };
+    var punct2 = {
+    lat: 44.4077430034321,
+     lng: 26.2064380533546
+    };
+    var punct3 = {
+    lat: 44.4290282454705,
+     lng: 26.0353560514766
+    };
+    var punct4 = {
+    lat: 44.4540046903158,
+     lng: 26.1253227469971
+    };
+
+
+    var settings = {
+        center: origin,
+        zoom: 10,
+        scaleControl: true
+    };
+
+    map = new google.maps.Map(document.getElementById('map'), settings);
+
+    let directionsService = new google.maps.DirectionsService();
+let directionsRenderer1_2 = new google.maps.DirectionsRenderer({
+                suppressMarkers: true,
+                polylineOptions: {
+                    strokeColor: 'orange',
+strokeWeight: 5,
+strokeOpacity: 0.6
+                }
+            });
+            directionsRenderer1_2.setMap(map);
+let directionsRenderer2_3 = new google.maps.DirectionsRenderer({
+                suppressMarkers: true,
+                polylineOptions: {
+                    strokeColor: 'yellow',
+strokeWeight: 5,
+strokeOpacity: 0.6
+                }
+            });
+            directionsRenderer2_3.setMap(map);
+let directionsRenderer3_4 = new google.maps.DirectionsRenderer({
+                suppressMarkers: true,
+                polylineOptions: {
+                    strokeColor: 'green',
+strokeWeight: 5,
+strokeOpacity: 0.6
+                }
+            });
+            directionsRenderer3_4.setMap(map);
+
+let directionsRendererD_0 = new google.maps.DirectionsRenderer({
+   suppressMarkers: true,
+   polylineOptions: {
+   strokeColor: 'turqoise',
+   strokeWeight: 5,
+   strokeOpacity: 0.6
+}
+ });
+directionsRendererD_0.setMap(map);
+
+let directionsRendererLast_D = new google.maps.DirectionsRenderer({
+suppressMarkers: true,
+polylineOptions: {strokeColor: 'cyan',
+strokeWeight: 5,
+strokeOpacity: 0.6
+}
+ });
+directionsRendererLast_D.setMap(map);
+
+var route1_2={
+   origin: punct1,
+   destination: punct2,
+   travelMode: 'DRIVING'
+}
+
+var route2_3={
+   origin: punct2,
+   destination: punct3,
+   travelMode: 'DRIVING'
+}
+
+var route3_4={
+   origin: punct3,
+   destination: punct4,
+   travelMode: 'DRIVING'
+}
+
+var routeD_0={
+origin: origin,
+destination: punct1,
+travelMode: 'DRIVING'
+}
+
+var routeLast_D={
+origin: punct4,
+destination: origin,
+travelMode: 'DRIVING'
+}
+
+new google.maps.Marker({
+   position: punct1,
+   map: map,
+   label: '1'
+});
+
+new google.maps.Marker({
+   position: punct2,
+   map: map,
+   label: '2'
+});
+
+new google.maps.Marker({
+   position: punct3,
+   map: map,
+   label: '3'
+});
+
+new google.maps.Marker({
+   position: punct4,
+   map: map,
+   label: '4'
+});
+
+new google.maps.Marker({
+position: origin,
+map: map,
+label: 'D'
+});
+
+directionsService.route(route1_2, function (response, status) {
+if (status !== 'OK') {
+window.alert('Directions request failed due to ' + status);
+ return;
+ } else {
+directionsRenderer1_2.setDirections(response);
+}
+}); 
+  
+directionsService.route(route2_3, function (response, status) {
+if (status !== 'OK') {
+window.alert('Directions request failed due to ' + status);
+ return;
+ } else {
+directionsRenderer2_3.setDirections(response);
+}
+}); 
+  
+directionsService.route(route3_4, function (response, status) {
+if (status !== 'OK') {
+window.alert('Directions request failed due to ' + status);
+ return;
+ } else {
+directionsRenderer3_4.setDirections(response);
+}
+}); 
+  
+directionsService.route(routeD_0, function(response, status){
+if(status!=='OK'){
+window.alert('Directions request failed due to ' + status);
+ return;
+} else {
+directionsRendererD_0.setDirections(response);
+}
+}); 
+
+directionsService.route(routeLast_D, function (response, status) {
+if (status !== 'OK') {
+window.alert('Directions request failed due to ' + status);
+ return;
+ } else {
+directionsRendererLast_D.setDirections(response);
+}
+}); 
+  }
+    </script>
+
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDr8qjcXOWsKsVGHdw1lHXy6sy_svXaZuk&callback=initMap">
+    </script>
+</body>
+</html>
