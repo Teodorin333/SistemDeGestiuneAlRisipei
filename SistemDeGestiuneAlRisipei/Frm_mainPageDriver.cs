@@ -197,7 +197,7 @@ namespace SistemDeGestiuneAlRisipei
             sb.Append(lastDirection);
 
 
-            sb.Append("}\r\n    </script>\r\n\r\n    <script async defer\r\n            src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyDr8qjcXOWsKsVGHdw1lHXy6sy_svXaZuk&callback=initMap\">\r\n    </script>\r\n</body>\r\n</html>");
+            sb.Append("}\r\n    </script>\r\n\r\n    <script async defer\r\n            src=\"https://maps.googleapis.com/maps/api/js?key=#########&callback=initMap\">\r\n    </script>\r\n</body>\r\n</html>");
 
             StreamWriter sw = new StreamWriter("E:/Facultate/Licenta/SistemDeGestiuneAlRisipei/DriverMap.html");
             sw.Write(sb.ToString());
